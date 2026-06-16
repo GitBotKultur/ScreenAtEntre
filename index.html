@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>BI-tavla</title><style>
+  html,body{margin:0;height:100%;background:#000;overflow:hidden;}
+  .wrap{position:fixed;inset:0;overflow:hidden;}
+  iframe{width:100%;height:calc(100% + 45px);border:0;}
+</style></head>
+<body>
+  <div class="wrap">
+    <iframe id="bi"
+      src="https://app.powerbi.com/view?r=eyJrIjoiOTYzMjQzZGYtMzgwZi00MTRjLTgzMjctMjRmZTc2OWU0MTRkIiwidCI6ImRmNDU1Y2M1LTBjOTEtNDgyNS05MTY4LTdmOWRlN2QyOGEwNSIsImMiOjh9"
+      allowFullScreen="true"></iframe>
+  </div>
+  <script>
+    setInterval(function(){
+      var f=document.getElementById('bi'); f.src=f.src;
+    }, 30*60*1000); // ladda om var 30:e minut
+  </script>
+</body>
+</html>
