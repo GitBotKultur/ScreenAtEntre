@@ -129,7 +129,7 @@
     <header>
       <div class="brand">
         <h1>Händelser<span class="dot"></span></h1>
-        <span class="sub">Kulturförvaltningen</span>
+        <span class="sub">Östra Hamngatan 16</span>
       </div>
       <div class="clock">
         <div class="t" id="clockT">–</div>
@@ -160,6 +160,8 @@ function bildSrc(val){
 const DATA_URL   = "data.json";   // filen som ditt Power Automate-flöde skriver
 const REFRESH_MS = 5 * 60 * 1000; // hämta ny data var 5:e minut
 const ROTATE_MS  = 12 * 1000;     // byt sida var 12:e sekund (om allt inte får plats)
+const DATUMORDNING   = "stigande"; // "stigande" = tidigast först, "fallande" = senast först
+const DOLJ_PASSERADE = false;      // true = visa inte händelser vars datum redan passerat
 
 /* Förhandsdata – används tills data.json finns. Dina riktiga rader. */
 const SAMPLE = [
@@ -235,7 +237,11 @@ function build(){
     grid.innerHTML = `<div class="empty">Inga händelser just nu</div>`;
     dots.innerHTML = ""; pages=[]; clearInterval(rotateTimer); return;
   }
-  pages = chunk(currentItems, perPage());
+  const sorted = [...currentItems].sort((a,b)=>{
+    const ta = new Date(a.Datum).getTime(), tb = new Date(b.Datum).getTime();
+    return (isNaN(ta)?Infinity:ta) - (isNaN(tb)?Infinity:tb);
+  });
+  pages = chunk(sorted, perPage());
   if(pageIdx >= pages.length) pageIdx = 0;
   showPage(pageIdx);
   renderDots();
