@@ -1,20 +1,290 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="utf-8"><title>BI-tavla</title><style>
-  html,body{margin:0;height:100%;background:#000;overflow:hidden;}
-  .wrap{position:fixed;inset:0;overflow:hidden;}
-  iframe{width:100%;height:calc(100% + 60px);border:0;}
-</style></head>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Händelser</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#15323a;
+    --bg-2:#1b3f49;
+    --paper:#f6efe2;
+    --paper-2:#efe6d4;
+    --ink:#1f2b2e;
+    --ink-soft:#5c6a6b;
+    --accent:#e8765a;
+    --accent-2:#e7b23c;
+    --line:rgba(255,255,255,.10);
+    --pad:clamp(20px,2.4vw,46px);
+    --gap:clamp(16px,1.5vw,28px);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:
+      radial-gradient(120% 90% at 85% -10%, var(--bg-2), transparent 60%),
+      var(--bg);
+    color:var(--paper);
+    font-family:"Inter",system-ui,sans-serif;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .stage{height:100vh;display:flex;flex-direction:column;padding:var(--pad);gap:var(--pad)}
+
+  /* ---- Header ---- */
+  header{display:flex;align-items:baseline;justify-content:space-between;gap:24px;flex:0 0 auto}
+  .brand{display:flex;align-items:baseline;gap:18px}
+  .brand h1{
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-weight:800;
+    font-size:clamp(34px,4.4vw,68px);
+    letter-spacing:-.02em;
+    line-height:.9;
+  }
+  .brand .dot{width:.42em;height:.42em;border-radius:50%;background:var(--accent);
+    display:inline-block;transform:translateY(-.06em);font-size:clamp(34px,4.4vw,68px)}
+  .brand .sub{
+    font-size:clamp(12px,1.1vw,17px);font-weight:500;color:var(--accent-2);
+    text-transform:uppercase;letter-spacing:.22em;
+  }
+  .clock{text-align:right;font-family:"Bricolage Grotesque",sans-serif;line-height:1}
+  .clock .t{font-weight:700;font-size:clamp(26px,3vw,46px);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .clock .d{font-family:"Inter";font-size:clamp(11px,1vw,16px);color:var(--ink-soft);
+    color:rgba(246,239,226,.6);text-transform:capitalize;margin-top:.25em}
+
+  /* ---- Grid ---- */
+  .grid{
+    flex:1 1 auto;
+    display:grid;
+    grid-template-columns:repeat(var(--cols,3),1fr);
+    grid-auto-rows:1fr;
+    gap:var(--gap);
+    min-height:0;
+    transition:opacity .55s ease;
+  }
+  @media (prefers-reduced-motion:reduce){.grid{transition:none}}
+
+  /* ---- Card ---- */
+  .card{
+    position:relative;
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:18px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 18px 40px -24px rgba(0,0,0,.55);
+    min-height:0;
+  }
+  .card .media{flex:1 1 52%;min-height:0;overflow:hidden;background:var(--paper-2)}
+  .card .media img{width:100%;height:100%;object-fit:cover;display:block}
+  .card .content{
+    flex:1 1 auto;
+    padding:clamp(16px,1.5vw,26px);
+    display:flex;flex-direction:column;gap:.5em;min-height:0;
+  }
+  .card.no-image .content{flex:1 1 100%;justify-content:center;padding:clamp(22px,2.4vw,40px)}
+
+  .stamp{
+    position:absolute;top:0;left:clamp(16px,1.5vw,26px);
+    background:var(--accent);color:#fff;
+    padding:.5em .62em .42em;border-radius:0 0 12px 12px;
+    text-align:center;line-height:.96;z-index:2;
+    box-shadow:0 8px 18px -8px rgba(0,0,0,.5);
+  }
+  .card.no-image .stamp{position:static;align-self:flex-start;border-radius:12px;margin-bottom:.7em}
+  .stamp .d{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(24px,2.5vw,40px);display:block}
+  .stamp .m{font-weight:600;font-size:clamp(10px,.9vw,14px);text-transform:uppercase;letter-spacing:.14em;display:block;margin-top:.18em}
+
+  .title{
+    font-family:"Bricolage Grotesque",sans-serif;font-weight:700;
+    font-size:clamp(20px,1.9vw,32px);line-height:1.04;letter-spacing:-.015em;
+  }
+  .card.no-image .title{font-size:clamp(26px,2.6vw,44px)}
+  .meta{
+    font-weight:600;font-size:clamp(12px,1vw,17px);color:var(--accent);
+    text-transform:capitalize;letter-spacing:.01em;
+  }
+  .desc{
+    font-size:clamp(13px,1.05vw,19px);line-height:1.42;color:var(--ink-soft);
+    display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;
+    -webkit-line-clamp:4;
+  }
+  .card.no-image .desc{-webkit-line-clamp:6;font-size:clamp(15px,1.25vw,22px)}
+
+  /* page dots */
+  .dots{flex:0 0 auto;display:flex;gap:9px;justify-content:center;align-items:center;height:10px}
+  .dots span{width:9px;height:9px;border-radius:50%;background:rgba(246,239,226,.22);transition:background .3s,width .3s}
+  .dots span.on{background:var(--accent);width:26px;border-radius:5px}
+  .dots:empty{display:none}
+
+  .empty{margin:auto;text-align:center;color:rgba(246,239,226,.6);font-size:24px}
+</style>
+</head>
 <body>
-  <div class="wrap">
-    <iframe id="bi"
-      src="https://app.powerbi.com/view?r=eyJrIjoiOTYzMjQzZGYtMzgwZi00MTRjLTgzMjctMjRmZTc2OWU0MTRkIiwidCI6ImRmNDU1Y2M1LTBjOTEtNDgyNS05MTY4LTdmOWRlN2QyOGEwNSIsImMiOjh9"
-      allowFullScreen="true"></iframe>
+  <div class="stage">
+    <header>
+      <div class="brand">
+        <h1>Händelser<span class="dot"></span></h1>
+        <span class="sub">Kulturförvaltningen</span>
+      </div>
+      <div class="clock">
+        <div class="t" id="clockT">–</div>
+        <div class="d" id="clockD"></div>
+      </div>
+    </header>
+    <div class="grid" id="grid"></div>
+    <div class="dots" id="dots"></div>
   </div>
-  <script>
-    setInterval(function(){
-      var f=document.getElementById('bi'); f.src=f.src;
-    }, 30*60*1000); // ladda om var 30:e minut
-  </script>
+
+<script>
+/* ============================================================
+   INSTÄLLNINGAR – det enda du normalt rör
+   ============================================================ */
+
+// Dina bildfiler är döpta exakt som "Bildval"-värdena (t.ex. "Alternativ A").
+// Då bygger sidan bildens sökväg automatiskt från värdet – ingen lista att underhålla.
+// Sätt bara mappen och filändelsen nedan så de stämmer med dina filer.
+// Saknas val (null) blir kortet ett rent textkort – det är meningen.
+const BILD_MAPP    = "";        // bilderna ligger i repots rot
+const BILD_ANDELSE = ".png";    // dina bilder är .png
+
+function bildSrc(val){
+  const fil = encodeURIComponent(val + BILD_ANDELSE);   // "Alternativ A.jpg" -> "Alternativ%20A.jpg"
+  return (BILD_MAPP ? BILD_MAPP + "/" : "") + fil;
+}
+
+const DATA_URL   = "data.json";   // filen som ditt Power Automate-flöde skriver
+const REFRESH_MS = 5 * 60 * 1000; // hämta ny data var 5:e minut
+const ROTATE_MS  = 12 * 1000;     // byt sida var 12:e sekund (om allt inte får plats)
+
+/* Förhandsdata – används tills data.json finns. Dina riktiga rader. */
+const SAMPLE = [
+  {Rubrik:"Test 30",Beskrivning:"Testar test",Datum:"2026-06-16T14:00:00Z",Bildval:"Alternativ A"},
+  {Rubrik:"Sommarfika",Beskrivning:"I år gör vi om fjolårets succé och fikar med jordgubbar och glass i lunchrummet och på uteplatsen om det är fint väder! Vi ses!",Datum:"2026-07-17T13:00:00Z",Bildval:null},
+  {Rubrik:"Möte i kulturen",Beskrivning:"Nämnden har möte!",Datum:"2026-06-26T15:00:00Z",Bildval:null},
+  {Rubrik:"Glasögon upphittade",Beskrivning:"Glasögon upphittade i lunchrummet",Datum:"2026-05-27T13:00:00Z",Bildval:null},
+  {Rubrik:"Test 1",Beskrivning:"Nu ska vi testa här!",Datum:"2026-06-17T02:00:00Z",Bildval:"Alternativ B"},
+  {Rubrik:"Fredagsfika",Beskrivning:"Kanelbullens lämmeldag",Datum:"2026-06-25T12:25:00Z",Bildval:"Alternativ E"}
+];
+
+/* ============================================================
+   Logik nedan – behöver normalt inte ändras
+   ============================================================ */
+const TZ = "Europe/Stockholm";
+const grid = document.getElementById("grid");
+const dots = document.getElementById("dots");
+
+let pages = [];
+let pageIdx = 0;
+let rotateTimer = null;
+let currentItems = SAMPLE;
+
+function fmt(iso){
+  const d = new Date(iso);
+  if (isNaN(d)) return null;
+  const p = (opt) => new Intl.DateTimeFormat("sv-SE",{timeZone:TZ,...opt}).format(d);
+  return {
+    day: p({day:"numeric"}),
+    mon: p({month:"short"}).replace(".",""),
+    weekday: p({weekday:"long"}),
+    time: p({hour:"2-digit",minute:"2-digit"})
+  };
+}
+
+function cardHTML(item){
+  const f = item.Datum ? fmt(item.Datum) : null;
+  const src = item.Bildval ? bildSrc(item.Bildval) : null;
+  const hasImg = !!src;
+
+  const stamp = f ? `<div class="stamp"><span class="d">${f.day}</span><span class="m">${f.mon}</span></div>` : "";
+  const meta  = f ? `<div class="meta">${f.weekday} · ${f.time}</div>` : "";
+  const media = hasImg
+    ? `<div class="media"><img src="${src}" alt="" onerror="this.closest('.card').classList.add('no-image');this.closest('.media').remove()"></div>`
+    : "";
+
+  return `<article class="card ${hasImg ? "has-image" : "no-image"}">
+    ${stamp}${media}
+    <div class="content">
+      <h2 class="title">${esc(item.Rubrik || "")}</h2>
+      ${meta}
+      <p class="desc">${esc(item.Beskrivning || "")}</p>
+    </div>
+  </article>`;
+}
+
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));}
+
+function perPage(){
+  const cols = Math.min(4, Math.max(1, Math.floor(window.innerWidth / 520)));
+  document.documentElement.style.setProperty("--cols", cols);
+  const headerH = document.querySelector("header").offsetHeight;
+  const padY = parseFloat(getComputedStyle(document.querySelector(".stage")).paddingTop) * 2;
+  const avail = window.innerHeight - headerH - padY - 60;
+  const rows = Math.min(3, Math.max(1, Math.floor(avail / 330)));
+  return cols * rows;
+}
+
+function chunk(arr, n){const out=[];for(let i=0;i<arr.length;i+=n)out.push(arr.slice(i,i+n));return out;}
+
+function build(){
+  if(!currentItems || currentItems.length===0){
+    grid.innerHTML = `<div class="empty">Inga händelser just nu</div>`;
+    dots.innerHTML = ""; pages=[]; clearInterval(rotateTimer); return;
+  }
+  pages = chunk(currentItems, perPage());
+  if(pageIdx >= pages.length) pageIdx = 0;
+  showPage(pageIdx);
+  renderDots();
+  clearInterval(rotateTimer);
+  if(pages.length > 1) rotateTimer = setInterval(nextPage, ROTATE_MS);
+}
+
+function showPage(i){
+  grid.innerHTML = pages[i].map(cardHTML).join("");
+}
+
+function renderDots(){
+  dots.innerHTML = pages.length>1
+    ? pages.map((_,i)=>`<span class="${i===pageIdx?"on":""}"></span>`).join("")
+    : "";
+}
+
+function nextPage(){
+  pageIdx = (pageIdx + 1) % pages.length;
+  grid.style.opacity = 0;
+  setTimeout(()=>{ showPage(pageIdx); renderDots(); grid.style.opacity = 1; }, 560);
+}
+
+async function loadData(){
+  try{
+    const res = await fetch(DATA_URL + "?t=" + Date.now(), {cache:"no-store"});
+    if(!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    const items = Array.isArray(data) ? data : (data.body || data.handelser || data.value || []);
+    if(Array.isArray(items) && items.length){ currentItems = items; }
+  }catch(e){
+    /* data.json finns inte än → behåll förhandsdatan */
+  }
+  build();
+}
+
+function tickClock(){
+  const now = new Date();
+  document.getElementById("clockT").textContent =
+    new Intl.DateTimeFormat("sv-SE",{timeZone:TZ,hour:"2-digit",minute:"2-digit"}).format(now);
+  document.getElementById("clockD").textContent =
+    new Intl.DateTimeFormat("sv-SE",{timeZone:TZ,weekday:"long",day:"numeric",month:"long"}).format(now);
+}
+
+let resizeT;
+window.addEventListener("resize",()=>{clearTimeout(resizeT);resizeT=setTimeout(build,250)});
+
+tickClock(); setInterval(tickClock, 15000);
+loadData(); setInterval(loadData, REFRESH_MS);
+</script>
 </body>
 </html>
