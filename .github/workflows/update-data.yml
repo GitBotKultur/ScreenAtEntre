@@ -1,1 +1,31 @@
+name: Uppdatera data
 
+on:
+  repository_dispatch:
+    types: [update-data]
+
+permissions:
+  contents: write
+
+jobs:
+  skriv-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hämta repot
+        uses: actions/checkout@v4
+
+      - name: Skriv data.json från payloaden
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const data = context.payload.client_payload.handelser || [];
+            fs.writeFileSync('data.json', JSON.stringify(data, null, 2));
+
+      - name: Committa och pusha
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data.json
+          git diff --staged --quiet || git commit -m "Uppdaterar händelser"
+          git push
