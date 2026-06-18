@@ -16,5 +16,11 @@
     "Bildval": null,
     "Datum": "2026-06-18T10:30:00Z",
     "Rubrik": "Test 33"
+  },
+  {
+    "Beskrivning": "Detta är ett testärende!",
+    "Bildval": "Alternativ C",
+    "Datum": "2026-06-19T08:15:00Z",
+    "Rubrik": "Testärende 35"
   }
 ]
