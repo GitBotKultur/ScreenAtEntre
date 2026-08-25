@@ -211,11 +211,11 @@ const ROTATE_MS  = 12 * 1000;     // byt sida var 12:e sekund (om allt inte får
 
 // Adressen QR-koden pekar på – klistra in länken till ert formulär här.
 // Lämnas den tom visas ingen QR-kod alls.
-const QR_URL   = "";
+const QR_URL   = "https://forms.cloud.microsoft/e/BFeKs90Epe";
 const QR_TEXT  = "Skanna för att lägga till händelse";
 
 // Texten som visas när det inte finns några händelser
-const EMPTY_TEXT = "Inga händelser just nu";
+const EMPTY_TEXT = "Det finns inga aktuella händelser just nu. Bidra gärna genom att skanna QR-koden och fylla i formuläret";
 
 const DATUMORDNING   = "stigande"; // "stigande" = tidigast först, "fallande" = senast först
 const DOLJ_PASSERADE = true;       // true = visa inte händelser som redan varit
@@ -550,7 +550,7 @@ const dots   = document.getElementById("dots");
 const qrHead = document.getElementById("qrHead");
 
 /* QR-koden ritas en gång vid start och återanvänds. */
-const QR_SVG = QR_URL ? qrSvg(QR_URL) : "https://forms.cloud.microsoft/e/BFeKs90Epe";
+const QR_SVG = QR_URL ? qrSvg(QR_URL) : "";
 if(QR_URL){
   qrHead.innerHTML = QR_SVG + '<div class="cap">' + QR_TEXT + '</div>';
 }
