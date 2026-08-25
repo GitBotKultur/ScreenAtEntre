@@ -1,44 +1,8 @@
 [
   {
-    "Beskrivning": "Detta är ett test",
-    "Bildval": "Alternativ D",
-    "Datum": "2026-06-19T14:30:00Z",
-    "Rubrik": "Test  36"
-  },
-  {
-    "Beskrivning": "Nämnden har möte! ",
-    "Bildval": null,
-    "Datum": "2026-06-26T15:00:00Z",
-    "Rubrik": "Möte i kulturen"
-  },
-  {
-    "Beskrivning": "Kanelbullens lämmeldag",
-    "Bildval": "Alternativ E",
-    "Datum": "2026-06-25T12:25:00Z",
-    "Rubrik": "Fredagsfika "
-  },
-  {
-    "Beskrivning": "asdasdsd",
-    "Bildval": null,
-    "Datum": "2026-06-18T10:30:00Z",
-    "Rubrik": "Test 33"
-  },
-  {
-    "Beskrivning": "Detta är ett testärende!",
-    "Bildval": "Alternativ C",
-    "Datum": "2026-06-19T08:15:00Z",
-    "Rubrik": "Testärende 35"
-  },
-  {
-    "Beskrivning": "Hej nu prövar jag",
-    "Bildval": "Alternativ D",
-    "Datum": "2026-06-20T15:35:00Z",
-    "Rubrik": "Test 37"
-  },
-  {
-    "Beskrivning": "Test ",
-    "Bildval": "Alternativ F",
-    "Datum": "2026-06-20T13:30:00Z",
-    "Rubrik": "Hej "
+    "Beskrivning": "Hej, Detta är ett test",
+    "Bildval": "Alternativ A",
+    "Datum": "2026-08-26T12:34:00Z",
+    "Rubrik": "TESTÄRENDE"
   }
 ]
