@@ -14,7 +14,7 @@
     --paper:#f6efe2;
     --paper-2:#efe6d4;
     --ink:#1f2b2e;
-    --ink-soft:#5c6a6b;
+    --ink-soft:#47585a;
     --accent:#e8765a;
     --accent-2:#e7b23c;
     --line:rgba(255,255,255,.10);
@@ -40,19 +40,19 @@
   .brand h1{
     font-family:"Bricolage Grotesque",sans-serif;
     font-weight:800;
-    font-size:clamp(34px,4.4vw,68px);
+    font-size:clamp(42px,5.4vw,86px);
     letter-spacing:-.02em;
     line-height:.9;
   }
   .brand .dot{width:.42em;height:.42em;border-radius:50%;background:var(--accent);
-    display:inline-block;transform:translateY(-.06em);font-size:clamp(34px,4.4vw,68px)}
+    display:inline-block;transform:translateY(-.06em);font-size:clamp(42px,5.4vw,86px)}
   .brand .sub{
-    font-size:clamp(12px,1.1vw,17px);font-weight:500;color:var(--accent-2);
+    font-size:clamp(15px,1.4vw,23px);font-weight:500;color:var(--accent-2);
     text-transform:uppercase;letter-spacing:.22em;
   }
   .clock{text-align:right;font-family:"Bricolage Grotesque",sans-serif;line-height:1}
-  .clock .t{font-weight:700;font-size:clamp(26px,3vw,46px);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
-  .clock .d{font-family:"Inter";font-size:clamp(11px,1vw,16px);color:var(--ink-soft);
+  .clock .t{font-weight:700;font-size:clamp(34px,3.9vw,62px);letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .clock .d{font-family:"Inter";font-size:clamp(14px,1.3vw,22px);color:var(--ink-soft);
     color:rgba(246,239,226,.6);text-transform:capitalize;margin-top:.25em}
 
   /* ---- Grid ---- */
@@ -80,7 +80,7 @@
     min-height:0;
   }
   .card .media{flex:1 1 52%;min-height:0;overflow:hidden;background:var(--paper-2)}
-  .card .media img{width:100%;height:100%;object-fit:cover;display:block}
+  .card .media img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block}
   .card .content{
     flex:1 1 auto;
     padding:clamp(16px,1.5vw,26px);
@@ -96,24 +96,23 @@
     box-shadow:0 8px 18px -8px rgba(0,0,0,.5);
   }
   .card.no-image .stamp{position:static;align-self:flex-start;border-radius:12px;margin-bottom:.7em}
-  .stamp .d{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(24px,2.5vw,40px);display:block}
-  .stamp .m{font-weight:600;font-size:clamp(10px,.9vw,14px);text-transform:uppercase;letter-spacing:.14em;display:block;margin-top:.18em}
+  .stamp .d{font-family:"Bricolage Grotesque";font-weight:800;font-size:clamp(28px,2.9vw,48px);display:block}
+  .stamp .m{font-weight:600;font-size:clamp(12px,1.05vw,17px);text-transform:uppercase;letter-spacing:.14em;display:block;margin-top:.18em}
 
   .title{
     font-family:"Bricolage Grotesque",sans-serif;font-weight:700;
-    font-size:clamp(20px,1.9vw,32px);line-height:1.04;letter-spacing:-.015em;
+    font-size:clamp(24px,2.3vw,40px);line-height:1.04;letter-spacing:-.015em;
   }
-  .card.no-image .title{font-size:clamp(26px,2.6vw,44px)}
+  .card.no-image .title{font-size:clamp(30px,3vw,52px)}
   .meta{
-    font-weight:600;font-size:clamp(12px,1vw,17px);color:var(--accent);
+    font-weight:600;font-size:clamp(15px,1.25vw,22px);color:var(--accent);
     text-transform:capitalize;letter-spacing:.01em;
   }
   .desc{
-    font-size:clamp(13px,1.05vw,19px);line-height:1.42;color:var(--ink-soft);
-    display:-webkit-box;-webkit-box-orient:vertical;overflow:hidden;
-    -webkit-line-clamp:4;
+    font-size:clamp(16px,1.35vw,25px);line-height:1.5;color:var(--ink-soft);
+    flex:1 1 auto;min-height:0;overflow:hidden;
   }
-  .card.no-image .desc{-webkit-line-clamp:6;font-size:clamp(15px,1.25vw,22px)}
+  .card.no-image .desc{flex:0 1 auto;font-size:clamp(18px,1.55vw,29px)}
 
   /* page dots */
   .dots{flex:0 0 auto;display:flex;gap:9px;justify-content:center;align-items:center;height:10px}
@@ -121,7 +120,50 @@
   .dots span.on{background:var(--accent);width:26px;border-radius:5px}
   .dots:empty{display:none}
 
-  .empty{margin:auto;text-align:center;color:rgba(246,239,226,.6);font-size:24px}
+  /* ---- QR ---- */
+  .head-right{display:flex;align-items:center;gap:clamp(18px,1.8vw,36px)}
+  .qr-card{
+    background:var(--paper);
+    border-radius:16px;
+    padding:clamp(9px,.8vw,15px);
+    display:flex;flex-direction:column;align-items:center;gap:.5em;
+    box-shadow:0 14px 30px -20px rgba(0,0,0,.65);
+    width:clamp(96px,8.4vw,148px);
+  }
+  .qr-card.hidden{display:none}
+  .qr-card svg{display:block;width:100%;height:auto}
+  .qr-card .cap{
+    font-size:clamp(8px,.66vw,12px);font-weight:600;color:var(--ink);
+    text-transform:uppercase;letter-spacing:.1em;text-align:center;line-height:1.3;
+  }
+
+  .empty{
+    grid-column:1 / -1;   /* spänner över alla kolumner */
+    grid-row:1 / -1;      /* spänner över alla rader */
+    align-self:center;
+    justify-self:center;
+    display:flex;flex-direction:column;align-items:center;
+    gap:clamp(20px,2.2vw,40px);
+    text-align:center;
+    max-width:80%;
+  }
+  .empty-msg{
+    color:rgba(246,239,226,.6);
+    font-size:clamp(20px,2.2vw,38px);
+  }
+  .qr-big{
+    background:var(--paper);
+    border-radius:24px;
+    padding:clamp(16px,1.5vw,28px);
+    display:flex;flex-direction:column;align-items:center;gap:.7em;
+    box-shadow:0 26px 60px -30px rgba(0,0,0,.7);
+    width:clamp(210px,24vw,420px);
+  }
+  .qr-big svg{display:block;width:100%;height:auto}
+  .qr-big .cap{
+    font-size:clamp(13px,1.15vw,21px);font-weight:600;color:var(--ink);
+    text-transform:uppercase;letter-spacing:.1em;line-height:1.3;
+  }
 </style>
 </head>
 <body>
@@ -131,9 +173,12 @@
         <h1>Händelser<span class="dot"></span></h1>
         <span class="sub">Östra Hamngatan 16</span>
       </div>
-      <div class="clock">
-        <div class="t" id="clockT">–</div>
-        <div class="d" id="clockD"></div>
+      <div class="head-right">
+        <div class="clock">
+          <div class="t" id="clockT">–</div>
+          <div class="d" id="clockD"></div>
+        </div>
+        <div class="qr-card hidden" id="qrHead"></div>
       </div>
     </header>
     <div class="grid" id="grid"></div>
@@ -157,12 +202,26 @@ function bildSrc(val){
   return (BILD_MAPP ? BILD_MAPP + "/" : "") + fil;
 }
 
-const DATA_URL   = "data.json";   // filen som ditt Power Automate-flöde skriver
+// Datan hämtas direkt från repot (raw), inte via GitHub Pages.
+// Då slipper du vänta på Pages-bygget varje gång flödet skriver ny data.
+// Byt "main" om din branch heter något annat.
+const DATA_URL   = "https://raw.githubusercontent.com/gitbotkultur/ScreenAtEntre/main/data.json";
 const REFRESH_MS = 5 * 60 * 1000; // hämta ny data var 5:e minut
 const ROTATE_MS  = 12 * 1000;     // byt sida var 12:e sekund (om allt inte får plats)
 
+// Adressen QR-koden pekar på – klistra in länken till ert formulär här.
+// Lämnas den tom visas ingen QR-kod alls.
+const QR_URL   = "https://forms.cloud.microsoft/e/BFeKs90Epe";
+const QR_TEXT  = "Skanna för att lägga till händelse";
+
+// Texten som visas när det inte finns några händelser
+const EMPTY_TEXT = "Det finns inga aktuella händelser just nu. Bidra gärna genom att skanna QR-koden och fylla i formuläret";
+
 const DATUMORDNING   = "stigande"; // "stigande" = tidigast först, "fallande" = senast först
 const DOLJ_PASSERADE = true;       // true = visa inte händelser som redan varit
+
+// Fönstret framåt i tiden styrs av OData-filtret i Power Automate-flödet,
+// inte här. Sidan visar allt som ligger i data.json och som inte redan varit.
 
 // När räknas en händelse som passerad?
 //   "dagens-slut" = ligger kvar hela dagen den inträffar, försvinner vid midnatt
@@ -179,12 +238,326 @@ const SAMPLE = [
   {Rubrik:"Fredagsfika",Beskrivning:"Kanelbullens lämmeldag",Datum:"2026-06-25T12:25:00Z",Bildval:"Alternativ E"}
 ];
 
+/* ---------- QR-encoder: byte mode, felkorrigering M, version 1-10 ----------
+   Inbyggd med flit: inget externt bibliotek som kan blockeras av nätverksfilter. */
+
+const QR_BLOCKS_M = {
+  1:[10,[[1,16]]],
+  2:[16,[[1,28]]],
+  3:[26,[[1,44]]],
+  4:[18,[[2,32]]],
+  5:[24,[[2,43]]],
+  6:[16,[[4,27]]],
+  7:[18,[[4,31]]],
+  8:[22,[[2,38],[2,39]]],
+  9:[22,[[3,36],[2,37]]],
+  10:[26,[[4,43],[1,44]]]
+};
+
+const QR_ALIGN = {
+  1:[],2:[6,18],3:[6,22],4:[6,26],5:[6,30],
+  6:[6,34],7:[6,22,38],8:[6,24,42],9:[6,26,46],10:[6,28,50]
+};
+
+/* --- Galois field GF(256) --- */
+const GF_EXP = new Uint8Array(512), GF_LOG = new Uint8Array(256);
+(function(){
+  let x = 1;
+  for(let i=0;i<255;i++){
+    GF_EXP[i] = x; GF_LOG[x] = i;
+    x <<= 1; if(x & 0x100) x ^= 0x11d;
+  }
+  for(let i=255;i<512;i++) GF_EXP[i] = GF_EXP[i-255];
+})();
+function gfMul(a,b){ return (a===0||b===0) ? 0 : GF_EXP[GF_LOG[a]+GF_LOG[b]]; }
+
+function rsGenPoly(deg){
+  let poly = [1];
+  for(let i=0;i<deg;i++){
+    const next = new Array(poly.length+1).fill(0);
+    for(let j=0;j<poly.length;j++){
+      next[j]   ^= gfMul(poly[j], GF_EXP[i]);
+      next[j+1] ^= poly[j];
+    }
+    poly = next;
+  }
+  return poly.reverse();   // fallande ordning: gen[0] är ledande koefficient
+}
+
+function rsEncode(data, ecLen){
+  const gen = rsGenPoly(ecLen);
+  const res = new Array(ecLen).fill(0);
+  for(const b of data){
+    const factor = b ^ res[0];
+    res.shift(); res.push(0);
+    for(let i=0;i<ecLen;i++) res[i] ^= gfMul(gen[i+1], factor);
+  }
+  return res;
+}
+
+/* --- Bitström --- */
+function utf8Bytes(str){ return Array.from(new TextEncoder().encode(str)); }
+
+function dataCodewordCount(version){
+  const [, groups] = QR_BLOCKS_M[version];
+  return groups.reduce((s,[n,c]) => s + n*c, 0);
+}
+
+function pickVersion(byteLen){
+  for(let v=1;v<=10;v++){
+    const capBits = dataCodewordCount(v) * 8;
+    const countBits = v <= 9 ? 8 : 16;
+    if(4 + countBits + byteLen*8 <= capBits) return v;
+  }
+  throw new Error("Texten är för lång för version 10");
+}
+
+function buildCodewords(text){
+  const bytes = utf8Bytes(text);
+  const version = pickVersion(bytes.length);
+  const countBits = version <= 9 ? 8 : 16;
+  const totalData = dataCodewordCount(version);
+
+  const bits = [];
+  const push = (val,len) => { for(let i=len-1;i>=0;i--) bits.push((val>>i)&1); };
+
+  push(0b0100, 4);
+  push(bytes.length, countBits);
+  for(const b of bytes) push(b, 8);
+
+  const cap = totalData*8;
+  for(let i=0;i<4 && bits.length<cap;i++) bits.push(0);
+  while(bits.length % 8 !== 0) bits.push(0);
+
+  const cw = [];
+  for(let i=0;i<bits.length;i+=8){
+    let v=0; for(let j=0;j<8;j++) v = (v<<1) | bits[i+j];
+    cw.push(v);
+  }
+  const pads = [0xEC,0x11];
+  let p=0; while(cw.length < totalData) cw.push(pads[p++ % 2]);
+
+  /* Dela i block, räkna EC, interleava */
+  const [ecLen, groups] = QR_BLOCKS_M[version];
+  const dataBlocks = [], ecBlocks = [];
+  let off = 0;
+  for(const [count, size] of groups){
+    for(let i=0;i<count;i++){
+      const blk = cw.slice(off, off+size); off += size;
+      dataBlocks.push(blk);
+      ecBlocks.push(rsEncode(blk, ecLen));
+    }
+  }
+
+  const out = [];
+  const maxData = Math.max(...dataBlocks.map(b=>b.length));
+  for(let i=0;i<maxData;i++)
+    for(const b of dataBlocks) if(i < b.length) out.push(b[i]);
+  for(let i=0;i<ecLen;i++)
+    for(const b of ecBlocks) out.push(b[i]);
+
+  return { version, codewords: out };
+}
+
+/* --- Modulplacering --- */
+function makeMatrix(version){
+  const size = version*4 + 17;
+  const m = Array.from({length:size}, () => new Array(size).fill(null));
+  const fixed = Array.from({length:size}, () => new Array(size).fill(false));
+
+  const setF = (r,c,v) => { m[r][c]=v; fixed[r][c]=true; };
+
+  const finder = (r0,c0) => {
+    for(let r=-1;r<=7;r++) for(let c=-1;c<=7;c++){
+      const rr=r0+r, cc=c0+c;
+      if(rr<0||cc<0||rr>=size||cc>=size) continue;
+      const inRing = (r>=0&&r<=6&&(c===0||c===6)) || (c>=0&&c<=6&&(r===0||r===6));
+      const inCore = r>=2&&r<=4&&c>=2&&c<=4;
+      setF(rr,cc,(inRing||inCore)?1:0);
+    }
+  };
+  finder(0,0); finder(0,size-7); finder(size-7,0);
+
+  for(let i=8;i<size-8;i++){ setF(6,i,(i%2===0)?1:0); setF(i,6,(i%2===0)?1:0); }
+
+  const ap = QR_ALIGN[version];
+  for(const r of ap) for(const c of ap){
+    if((r===6&&c===6)||(r===6&&c===ap[ap.length-1])||(r===ap[ap.length-1]&&c===6)) continue;
+    for(let dr=-2;dr<=2;dr++) for(let dc=-2;dc<=2;dc++){
+      const ring = Math.max(Math.abs(dr),Math.abs(dc));
+      setF(r+dr,c+dc,(ring===1)?0:1);
+    }
+  }
+
+  setF(size-8,8,1); // mörk modul
+
+  /* Reservera formatytor */
+  for(let i=0;i<9;i++){ if(m[8][i]===null) setF(8,i,0); if(m[i][8]===null) setF(i,8,0); }
+  for(let i=0;i<8;i++){ if(m[8][size-1-i]===null) setF(8,size-1-i,0); if(m[size-1-i][8]===null) setF(size-1-i,8,0); }
+
+  if(version >= 7){
+    let rem = version << 12;
+    for(let i=0;i<12;i++) if(rem & (1<<(17-i))) rem ^= 0x1F25 << (5-i);
+    const bitsV = (version<<12) | (rem & 0xFFF);
+    for(let i=0;i<18;i++){
+      const bit = (bitsV >> i) & 1;
+      const r = Math.floor(i/3), c = i%3;
+      setF(size-11+c, r, bit);
+      setF(r, size-11+c, bit);
+    }
+  }
+
+  return { m, fixed, size };
+}
+
+function placeData(m, fixed, size, codewords){
+  let bitIdx = 0;
+  const totalBits = codewords.length*8;
+  const bitAt = (i) => i < totalBits ? (codewords[i>>3] >> (7-(i&7))) & 1 : 0;
+
+  let up = true;
+  for(let col=size-1; col>0; col-=2){
+    if(col === 6) col--;
+    for(let k=0;k<size;k++){
+      const row = up ? size-1-k : k;
+      for(let dc=0;dc<2;dc++){
+        const c = col-dc;
+        if(fixed[row][c]) continue;
+        m[row][c] = bitAt(bitIdx++);
+      }
+    }
+    up = !up;
+  }
+}
+
+function maskFn(id, r, c){
+  switch(id){
+    case 0: return (r+c)%2===0;
+    case 1: return r%2===0;
+    case 2: return c%3===0;
+    case 3: return (r+c)%3===0;
+    case 4: return (Math.floor(r/2)+Math.floor(c/3))%2===0;
+    case 5: return ((r*c)%2)+((r*c)%3)===0;
+    case 6: return (((r*c)%2)+((r*c)%3))%2===0;
+    case 7: return (((r+c)%2)+((r*c)%3))%2===0;
+  }
+}
+
+function applyFormat(m, size, mask){
+  let rem = 0b00 << 3 | mask;          // ECC-nivå M = 00
+  const data = rem;
+  let x = data << 10;
+  for(let i=0;i<5;i++) if(x & (1<<(14-i))) x ^= 0x537 << (4-i);
+  const bitsF = ((data<<10) | (x & 0x3FF)) ^ 0x5412;
+
+  for(let i=0;i<15;i++){
+    const bit = (bitsF >> i) & 1;
+
+    // Lodrät remsa i kolumn 8
+    if(i<6)       m[i][8] = bit;
+    else if(i<8)  m[i+1][8] = bit;
+    else          m[size-15+i][8] = bit;
+
+    // Vågrät remsa i rad 8
+    if(i<8)       m[8][size-1-i] = bit;
+    else if(i===8) m[8][7] = bit;
+    else          m[8][14-i] = bit;
+  }
+  m[size-8][8] = 1;   // mörk modul
+}
+
+function penalty(m,size){
+  let score = 0;
+  // Regel 1
+  for(let i=0;i<size;i++){
+    for(const dir of [0,1]){
+      let run=1, prev=dir? m[0][i] : m[i][0];
+      for(let j=1;j<size;j++){
+        const v = dir ? m[j][i] : m[i][j];
+        if(v===prev) run++;
+        else { if(run>=5) score += 3+(run-5); run=1; prev=v; }
+      }
+      if(run>=5) score += 3+(run-5);
+    }
+  }
+  // Regel 2
+  for(let r=0;r<size-1;r++) for(let c=0;c<size-1;c++){
+    const v=m[r][c];
+    if(v===m[r][c+1] && v===m[r+1][c] && v===m[r+1][c+1]) score += 3;
+  }
+  // Regel 3
+  const pats = [[1,0,1,1,1,0,1,0,0,0,0],[0,0,0,0,1,0,1,1,1,0,1]];
+  for(let r=0;r<size;r++) for(let c=0;c<size;c++){
+    for(const p of pats){
+      if(c+11<=size){ let ok=true; for(let i=0;i<11;i++) if(m[r][c+i]!==p[i]){ok=false;break;} if(ok) score+=40; }
+      if(r+11<=size){ let ok=true; for(let i=0;i<11;i++) if(m[r+i][c]!==p[i]){ok=false;break;} if(ok) score+=40; }
+    }
+  }
+  // Regel 4
+  let dark=0; for(let r=0;r<size;r++) for(let c=0;c<size;c++) if(m[r][c]) dark++;
+  const pct = dark*100/(size*size);
+  score += Math.floor(Math.abs(pct-50)/5)*10;
+  return score;
+}
+
+function qrMatrix(text, forceMask){
+  const { version, codewords } = buildCodewords(text);
+  let best=null, bestScore=Infinity;
+  const masks = (forceMask===undefined) ? [0,1,2,3,4,5,6,7] : [forceMask];
+  for(const mask of masks){
+    const { m, fixed, size } = makeMatrix(version);
+    placeData(m, fixed, size, codewords);
+    for(let r=0;r<size;r++) for(let c=0;c<size;c++)
+      if(!fixed[r][c] && maskFn(mask,r,c)) m[r][c] ^= 1;
+    applyFormat(m, size, mask);
+    const s = penalty(m,size);
+    if(s < bestScore){ bestScore=s; best={m,size,version,mask}; }
+  }
+  return best;
+}
+
+/* Ritar matrisen som ett enda SVG-path. Vågräta löpor slås ihop till
+   rektanglar, vilket ger mycket färre noder än en ruta per modul. */
+function qrSvg(text, quiet){
+  quiet = (quiet === undefined) ? 4 : quiet;
+  const { m, size } = qrMatrix(text);
+  const dim = size + quiet*2;
+  let d = "";
+  for(let r=0;r<size;r++){
+    let c = 0;
+    while(c < size){
+      if(!m[r][c]){ c++; continue; }
+      let len = 0;
+      while(c+len < size && m[r][c+len]) len++;
+      d += "M" + (c+quiet) + " " + (r+quiet) + "h" + len + "v1h-" + len + "z";
+      c += len;
+    }
+  }
+  return '<svg viewBox="0 0 ' + dim + ' ' + dim + '" xmlns="http://www.w3.org/2000/svg" ' +
+         'shape-rendering="crispEdges" role="img" aria-label="QR-kod"><path d="' + d +
+         '" fill="var(--ink)"/></svg>';
+}
+
 /* ============================================================
    Logik nedan – behöver normalt inte ändras
    ============================================================ */
 const TZ = "Europe/Stockholm";
-const grid = document.getElementById("grid");
-const dots = document.getElementById("dots");
+const grid   = document.getElementById("grid");
+const dots   = document.getElementById("dots");
+const qrHead = document.getElementById("qrHead");
+
+/* QR-koden ritas en gång vid start och återanvänds. */
+const QR_SVG = QR_URL ? qrSvg(QR_URL) : "";
+if(QR_URL){
+  qrHead.innerHTML = QR_SVG + '<div class="cap">' + QR_TEXT + '</div>';
+}
+
+function emptyHTML(){
+  const qr = QR_URL
+    ? '<div class="qr-big">' + QR_SVG + '<div class="cap">' + QR_TEXT + '</div></div>'
+    : "";
+  return '<div class="empty"><div class="empty-msg">' + EMPTY_TEXT + '</div>' + qr + '</div>';
+}
 
 let pages = [];
 let pageIdx = 0;
@@ -260,12 +633,14 @@ function build(){
     : (currentItems || []);
 
   if(lista.length === 0){
-    grid.innerHTML = `<div class="empty">Det finns inga händelser att visa</div>`;
+    grid.innerHTML = emptyHTML();
     dots.innerHTML = "";
     pages = [];
     clearInterval(rotateTimer);
+    qrHead.classList.add("hidden");     // QR:en flyttar in i mitten istället
     return;
   }
+  qrHead.classList.toggle("hidden", !QR_URL);
 
   const sorted = [...lista].sort((a,b)=>{
     const ta = new Date(a.Datum).getTime();
@@ -286,8 +661,33 @@ function build(){
   if(pages.length > 1) rotateTimer = setInterval(nextPage, ROTATE_MS);
 }
 
+/* Krymper beskrivningen tills den ryms i kortet.
+   Binärsökning ger rätt storlek på åtta steg istället för att trappa ner pixel för pixel. */
+const DESC_MIN_ANDEL = 0.55;   // hur långt ner texten får krympa, andel av CSS-storleken
+const DESC_MIN_PX    = 12;     // absolut golv
+
+function fitDesc(){
+  document.querySelectorAll(".card .desc").forEach(el => {
+    el.style.fontSize = "";                                   // tillbaka till CSS-värdet
+    const max = parseFloat(getComputedStyle(el).fontSize);
+    if(!max || el.scrollHeight <= el.clientHeight) return;    // ryms redan
+
+    const min = Math.max(DESC_MIN_PX, max * DESC_MIN_ANDEL);
+    let lo = min, hi = max, best = min;
+
+    for(let i = 0; i < 8; i++){
+      const mid = (lo + hi) / 2;
+      el.style.fontSize = mid + "px";
+      if(el.scrollHeight <= el.clientHeight){ best = mid; lo = mid; }
+      else { hi = mid; }
+    }
+    el.style.fontSize = best.toFixed(1) + "px";
+  });
+}
+
 function showPage(i){
   grid.innerHTML = pages[i].map(cardHTML).join("");
+  requestAnimationFrame(fitDesc);
 }
 
 function renderDots(){
