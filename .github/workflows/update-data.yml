@@ -7,6 +7,14 @@ on:
 permissions:
   contents: write
 
+# Två anrop tätt inpå varandra skulle annars starta parallella körningar
+# som krockar vid push. Här köas de i stället, och en väntande äldre
+# körning avbryts – varje payload innehåller hela listan, så den nyaste
+# har alltid den mest kompletta bilden.
+concurrency:
+  group: update-data
+  cancel-in-progress: true
+
 jobs:
   skriv-data:
     runs-on: ubuntu-latest
