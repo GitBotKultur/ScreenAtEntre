@@ -153,17 +153,23 @@ const BILD_MAPP    = "";        // bilderna ligger i repots rot
 const BILD_ANDELSE = ".png";    // dina bilder är .png
 
 function bildSrc(val){
-  const fil = encodeURIComponent(val + BILD_ANDELSE);   // "Alternativ A.jpg" -> "Alternativ%20A.jpg"
+  const fil = encodeURIComponent(val + BILD_ANDELSE);   // "Alternativ A.png" -> "Alternativ%20A.png"
   return (BILD_MAPP ? BILD_MAPP + "/" : "") + fil;
 }
 
 const DATA_URL   = "data.json";   // filen som ditt Power Automate-flöde skriver
 const REFRESH_MS = 5 * 60 * 1000; // hämta ny data var 5:e minut
 const ROTATE_MS  = 12 * 1000;     // byt sida var 12:e sekund (om allt inte får plats)
-const DATUMORDNING   = "stigande"; // "stigande" = tidigast först, "fallande" = senast först
-const DOLJ_PASSERADE = false;      // true = visa inte händelser vars datum redan passerat
 
-/* Förhandsdata – används tills data.json finns. Dina riktiga rader. */
+const DATUMORDNING   = "stigande"; // "stigande" = tidigast först, "fallande" = senast först
+const DOLJ_PASSERADE = true;       // true = visa inte händelser som redan varit
+
+// När räknas en händelse som passerad?
+//   "dagens-slut" = ligger kvar hela dagen den inträffar, försvinner vid midnatt
+//   "starttid"    = försvinner så fort klockslaget passerat
+const PASSERAD_GRANS = "dagens-slut";
+
+/* Förhandsdata – används tills data.json finns. */
 const SAMPLE = [
   {Rubrik:"Test 30",Beskrivning:"Testar test",Datum:"2026-06-16T14:00:00Z",Bildval:"Alternativ A"},
   {Rubrik:"Sommarfika",Beskrivning:"I år gör vi om fjolårets succé och fikar med jordgubbar och glass i lunchrummet och på uteplatsen om det är fint väder! Vi ses!",Datum:"2026-07-17T13:00:00Z",Bildval:null},
@@ -195,6 +201,22 @@ function fmt(iso){
     weekday: p({weekday:"long"}),
     time: p({hour:"2-digit",minute:"2-digit"})
   };
+}
+
+/* Datumet som "2026-06-16" räknat i svensk tidszon.
+   Genom att jämföra sådana strängar slipper vi tidszonsmatematik helt. */
+function dagStr(d){
+  return new Intl.DateTimeFormat("sv-SE",{
+    timeZone:TZ, year:"numeric", month:"2-digit", day:"2-digit"
+  }).format(d);
+}
+
+function harPasserat(item){
+  if(!item.Datum) return false;              // saknar datum -> visas alltid
+  const d = new Date(item.Datum);
+  if(isNaN(d)) return false;                 // ogiltigt datum -> visas alltid
+  if(PASSERAD_GRANS === "starttid") return d.getTime() < Date.now();
+  return dagStr(d) < dagStr(new Date());     // ligger kvar resten av dagen
 }
 
 function cardHTML(item){
@@ -233,14 +255,29 @@ function perPage(){
 function chunk(arr, n){const out=[];for(let i=0;i<arr.length;i+=n)out.push(arr.slice(i,i+n));return out;}
 
 function build(){
-  if(!currentItems || currentItems.length===0){
-    grid.innerHTML = `<div class="empty">Inga händelser just nu</div>`;
-    dots.innerHTML = ""; pages=[]; clearInterval(rotateTimer); return;
+  const lista = DOLJ_PASSERADE
+    ? (currentItems || []).filter(i => !harPasserat(i))
+    : (currentItems || []);
+
+  if(lista.length === 0){
+    grid.innerHTML = `<div class="empty">Det finns inga händelser att visa</div>`;
+    dots.innerHTML = "";
+    pages = [];
+    clearInterval(rotateTimer);
+    return;
   }
-  const sorted = [...currentItems].sort((a,b)=>{
-    const ta = new Date(a.Datum).getTime(), tb = new Date(b.Datum).getTime();
-    return (isNaN(ta)?Infinity:ta) - (isNaN(tb)?Infinity:tb);
+
+  const sorted = [...lista].sort((a,b)=>{
+    const ta = new Date(a.Datum).getTime();
+    const tb = new Date(b.Datum).getTime();
+    const va = isNaN(ta) ? null : ta;
+    const vb = isNaN(tb) ? null : tb;
+    if(va === null && vb === null) return 0;
+    if(va === null) return 1;   // odaterade hamnar alltid sist
+    if(vb === null) return -1;
+    return DATUMORDNING === "fallande" ? vb - va : va - vb;
   });
+
   pages = chunk(sorted, perPage());
   if(pageIdx >= pages.length) pageIdx = 0;
   showPage(pageIdx);
