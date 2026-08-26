@@ -226,6 +226,13 @@ const DOLJ_PASSERADE = true;       // true = visa inte händelser som redan vari
 // Flödet levererar allt från idag och framåt – gränsen sätts här.
 const VISA_DAGAR_FRAMAT = 5;
 
+// Hur ska tidsstämplarna i data.json tolkas?
+//   "utc"   = värdena är i UTC (SharePoints råa format, slutar på Z).
+//             Sidan räknar om till svensk tid. Detta är det normala.
+//   "lokal" = flödet har redan konverterat till svensk tid.
+//             Ett eventuellt Z ignoreras, annars blir tiden två timmar fel.
+const TIDSSTAMPEL = "lokal";
+
 // När räknas en händelse som passerad?
 //   "dagens-slut" = ligger kvar hela dagen den inträffar, försvinner vid midnatt
 //   "starttid"    = försvinner så fort klockslaget passerat
@@ -567,9 +574,20 @@ let pageIdx = 0;
 let rotateTimer = null;
 let currentItems = SAMPLE;
 
+/* Tolkar ett datumvärde enligt TIDSSTAMPEL. Returnerar null vid ogiltigt värde. */
+function parseDatum(v){
+  if(!v) return null;
+  let s = String(v);
+  if(TIDSSTAMPEL === "lokal"){
+    s = s.replace(/(Z|[+-]\d{2}:?\d{2})$/i, "");   // släng tidszonsmärkningen
+  }
+  const d = new Date(s);
+  return isNaN(d) ? null : d;
+}
+
 function fmt(iso){
-  const d = new Date(iso);
-  if (isNaN(d)) return null;
+  const d = parseDatum(iso);
+  if (!d) return null;
   const p = (opt) => new Intl.DateTimeFormat("sv-SE",{timeZone:TZ,...opt}).format(d);
   return {
     day: p({day:"numeric"}),
@@ -588,18 +606,16 @@ function dagStr(d){
 }
 
 function harPasserat(item){
-  if(!item.Datum) return false;              // saknar datum -> visas alltid
-  const d = new Date(item.Datum);
-  if(isNaN(d)) return false;                 // ogiltigt datum -> visas alltid
+  const d = parseDatum(item.Datum);
+  if(!d) return false;                       // saknar eller ogiltigt datum -> visas alltid
   if(PASSERAD_GRANS === "starttid") return d.getTime() < Date.now();
   return dagStr(d) < dagStr(new Date());     // ligger kvar resten av dagen
 }
 
 function forLangtFram(item){
   if(VISA_DAGAR_FRAMAT <= 0) return false;   // ingen gräns satt
-  if(!item.Datum) return false;              // saknar datum -> visas alltid
-  const d = new Date(item.Datum);
-  if(isNaN(d)) return false;
+  const d = parseDatum(item.Datum);
+  if(!d) return false;                       // saknar eller ogiltigt datum -> visas alltid
   const grans = new Date();
   grans.setDate(grans.getDate() + VISA_DAGAR_FRAMAT);
   return dagStr(d) > dagStr(grans);
@@ -658,10 +674,9 @@ function build(){
   qrHead.classList.toggle("hidden", !QR_URL);
 
   const sorted = [...lista].sort((a,b)=>{
-    const ta = new Date(a.Datum).getTime();
-    const tb = new Date(b.Datum).getTime();
-    const va = isNaN(ta) ? null : ta;
-    const vb = isNaN(tb) ? null : tb;
+    const da = parseDatum(a.Datum), db = parseDatum(b.Datum);
+    const va = da ? da.getTime() : null;
+    const vb = db ? db.getTime() : null;
     if(va === null && vb === null) return 0;
     if(va === null) return 1;   // odaterade hamnar alltid sist
     if(vb === null) return -1;
