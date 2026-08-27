@@ -244,16 +244,7 @@ const TIDSSTAMPEL = "lokal";
 //   "starttid"    = försvinner så fort klockslaget passerat
 const PASSERAD_GRANS = "dagens-slut";
 
-/* Förhandsdata – används tills data.json finns. */
-const SAMPLE = [
-  {Rubrik:"Test 30",Beskrivning:"Testar test",Datum:"2026-06-16T14:00:00Z",Bildval:"Alternativ A"},
-  {Rubrik:"Sommarfika",Beskrivning:"I år gör vi om fjolårets succé och fikar med jordgubbar och glass i lunchrummet och på uteplatsen om det är fint väder! Vi ses!",Datum:"2026-07-17T13:00:00Z",Bildval:null},
-  {Rubrik:"Möte i kulturen",Beskrivning:"Nämnden har möte!",Datum:"2026-06-26T15:00:00Z",Bildval:null},
-  {Rubrik:"Glasögon upphittade",Beskrivning:"Glasögon upphittade i lunchrummet",Datum:"2026-05-27T13:00:00Z",Bildval:null},
-  {Rubrik:"Test 1",Beskrivning:"Nu ska vi testa här!",Datum:"2026-06-17T02:00:00Z",Bildval:"Alternativ B"},
-  {Rubrik:"Fredagsfika",Beskrivning:"Kanelbullens lämmeldag",Datum:"2026-06-25T12:25:00Z",Bildval:"Alternativ E"},
-  {Rubrik:"Utställning i foajén",Beskrivning:"Öppen hela veckan.",Datum:"2026-08-24T09:00:00Z",DatumTom:"2026-08-29T17:00:00Z",Bildval:null}
-];
+
 
 /* ---------- QR-encoder: byte mode, felkorrigering M, version 1-10 ----------
    Inbyggd med flit: inget externt bibliotek som kan blockeras av nätverksfilter. */
@@ -579,7 +570,7 @@ function emptyHTML(){
 let pages = [];
 let pageIdx = 0;
 let rotateTimer = null;
-let currentItems = SAMPLE;
+let currentItems = [];
 
 /* Är värdet bara ett datum, utan klockslag? T.ex. "2026-08-29". */
 function arBaraDatum(v){
