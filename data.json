@@ -1,8 +1,14 @@
 [
   {
     "Beskrivning": "Kom på gemensam morgonfika i köket - det är bara att dyka upp!",
-    "Bildval": "Alternativ A",
-    "Datum": "2026-08-27T08:00:00Z",
+    "Bildval": null,
+    "Datum": "2026-08-27T06:00:00Z",
     "Rubrik": "Tosdagsfika"
+  },
+  {
+    "Beskrivning": "idag kl. 11.30 kommer ett kort nätverksavbrott att ske i samband med byte av internetleverantör. Avbrottet beräknas pågå i högst 30 minuter. ",
+    "Bildval": "Alternativ B",
+    "Datum": "2026-08-27T11:30:00Z",
+    "Rubrik": "Kort nätverksavbrott idag"
   }
 ]
